@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"net"
@@ -27,6 +28,18 @@ func main() {
 
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusOK)
+		writer.Header().Set("Content-Type", "application/json")
+		resp := make(map[string]string)
+		resp["message"] = "OK"
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			log.Fatal("Error happened in JSON marshal: %s", err)
+		}
+		_, err = writer.Write(jsonResp)
+		if err != nil {
+			log.Fatal("Error while writing response: %s", err)
+			return
+		}
 	})
 
 	serv := http.Server{
