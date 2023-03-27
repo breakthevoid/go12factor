@@ -1,7 +1,0 @@
-meta:
-  environment: go
-  toolchain:
-    name: go mod
-
-run:
-  scriptName: cmd/go12factor/main.go
